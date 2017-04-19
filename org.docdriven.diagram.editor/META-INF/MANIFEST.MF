@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Docdriven Diagram Editor
+Bundle-SymbolicName: org.docdriven.diagram.editor;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: lib/nanohttpd-2.3.1.jar,
+ .
+Require-Bundle: org.eclipse.core.resources;bundle-version="3.11.1",
+ org.eclipse.core.runtime;bundle-version="3.12.0",
+ org.eclipse.jface;bundle-version="3.12.1",
+ org.eclipse.ui;bundle-version="3.108.1",
+ org.eclipse.ui.ide;bundle-version="3.12.2",
+ org.eclipse.ui.editors;bundle-version="3.10.1",
+ org.eclipse.jface.text
+Bundle-Activator: org.docdriven.diagram.editor.Activator
+Bundle-ActivationPolicy: lazy

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="org.docdriven.diagram.editor.DiagramEditor"
+            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
+            extensions="xdia"
+            icon="icons/sample.gif"
+            id="org.docdriven.diagram.editor.DiagramEditor"
+            name="Docdriven Diagram Editor">
+      </editor>
+   </extension>
+
+</plugin>
