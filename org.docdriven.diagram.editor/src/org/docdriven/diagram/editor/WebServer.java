@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -69,17 +70,17 @@ public class WebServer extends NanoHTTPD {
 		try {
 			
 			URL resource = bundle.getResource("/editor/index.html");
-			String template = getStringFromStream(resource.openStream());
+			String editorHtml = getStringFromStream(resource.openStream());
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();
 			
 			IFile file = workspace.getRoot().getFile(new Path(f));
 			if (file.exists()) {
 				String content = getStringFromStream(file.getContents(), file.getCharset());
-				template = template.replace("#TIMESTAMP#", String.valueOf(System.currentTimeMillis()));
-				template = template.replace("#FILE#", content);
+				String javaContent = StringEscapeUtils.escapeJava(content);
+				editorHtml = editorHtml.replace("var xmlImportData = null;", "var xmlImportData = \"" + javaContent + "\"");
 			}
 			
-			return newFixedLengthResponse(Response.Status.OK, "text/html", template);
+			return newFixedLengthResponse(Response.Status.OK, "text/html", editorHtml);
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);

@@ -55,7 +55,7 @@ public class DiagramEditor extends EditorPart {
 		
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 		
-		String content = "";
+		String content = getDiagramXML();
 		try {
 			((FileEditorInput) getEditorInput()).getFile().setContents(new ByteArrayInputStream(content.getBytes()),
 					true, true, monitor);
@@ -92,7 +92,7 @@ public class DiagramEditor extends EditorPart {
 		browser.setJavascriptEnabled(true);
 		browser.setUrl(baseUrl + "/editor/index.html" + 
 				"?file=" + ((FileEditorInput) getEditorInput()).getFile().getFullPath());
-		function = new CustomFunction(this, browser, "javaFunction");
+		function = new MarkEditorDirtyCallback(this, browser, "javaMarkEditorDirty");
 	}
 
 	@Override
@@ -107,16 +107,16 @@ public class DiagramEditor extends EditorPart {
 		// empty block
 	}
 
-	static class CustomFunction extends BrowserFunction {
+	static class MarkEditorDirtyCallback extends BrowserFunction {
 		private DiagramEditor editor;
 
-		CustomFunction(DiagramEditor editor, Browser browser, String name) {
+		MarkEditorDirtyCallback(DiagramEditor editor, Browser browser, String name) {
 			super(browser, name);
 			this.editor = editor;
 		}
 
 		public Object function(Object[] arguments) {
-			editor.dirty = true;
+			editor.dirty = (boolean) arguments[0];
 			editor.firePropertyChange(IEditorPart.PROP_DIRTY);
 			return null;
 		}
@@ -157,7 +157,7 @@ public class DiagramEditor extends EditorPart {
 
 		dirty = false;
 		firePropertyChange(IEditorPart.PROP_DIRTY);
-		String content = "";
+		String content = getDiagramXML();
 		try {
 			if (file.exists()) {
 				file.setContents(new ByteArrayInputStream(content.getBytes()), true, true, progressMonitor);
@@ -171,6 +171,10 @@ public class DiagramEditor extends EditorPart {
 		newInput = new FileEditorInput(file);
 		setInput(newInput);
 		setPartName(newInput.getName());
+	}
+
+	private String getDiagramXML() {
+		return (String) browser.evaluate("return editorUi.getXml()");
 	}
 
 	protected IProgressMonitor getProgressMonitor() {

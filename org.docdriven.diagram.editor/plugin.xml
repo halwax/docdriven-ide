@@ -7,7 +7,7 @@
             class="org.docdriven.diagram.editor.DiagramEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             extensions="xdia"
-            icon="icons/sample.gif"
+            icon="icons/logo.gif"
             id="org.docdriven.diagram.editor.DiagramEditor"
             name="Docdriven Diagram Editor">
       </editor>

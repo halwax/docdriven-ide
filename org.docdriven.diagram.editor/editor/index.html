@@ -57,30 +57,81 @@
 </head>
 <body class="geEditor">
 	<script type="text/javascript">
+	
+		var xmlImportData = null;
+		
+		var editorUi = null;
+	
 		// Extends EditorUi to update I/O action states based on availability of backend
 		(function()
 		{
+		
+			var isSWTBrowser = typeof(javaMarkEditorDirty) !== 'undefined';
+		
+			if(isSWTBrowser) {
+				
+				Menus.prototype.defaultMenuItems = [];
+				
+				var editorModified = Editor.prototype.setModified;
+				Editor.prototype.setModified = function() {
+					editorModified.apply(this, arguments);
+					javaMarkEditorDirty.apply(this, arguments);
+				}
+			}
+		
 			var editorUiInit = EditorUi.prototype.init;
-			
 			EditorUi.prototype.init = function()
 			{
 				editorUiInit.apply(this, arguments);
-				this.actions.get('export').setEnabled(false);
+				
+				var enabled = !isSWTBrowser;
+				
+				this.actions.get('export').setEnabled(enabled);
+				this.actions.get('open').setEnabled(enabled || Graph.fileSupport);
+				this.actions.get('import').setEnabled(enabled || Graph.fileSupport);
+				this.actions.get('save').setEnabled(enabled);
+				this.actions.get('saveAs').setEnabled(enabled);
+				this.actions.get('export').setEnabled(enabled);
 
-				// Updates action states which require a backend
-				if (!Editor.useLocalStorage)
-				{
-					mxUtils.post(OPEN_URL, '', mxUtils.bind(this, function(req)
-					{
-						var enabled = req.getStatus() != 404;
-						this.actions.get('open').setEnabled(enabled || Graph.fileSupport);
-						this.actions.get('import').setEnabled(enabled || Graph.fileSupport);
-						this.actions.get('save').setEnabled(enabled);
-						this.actions.get('saveAs').setEnabled(enabled);
-						this.actions.get('export').setEnabled(enabled);
-					}));
-				}
 			};
+			
+			EditorUi.prototype.getXml = function()
+			{		
+				if (this.editor.graph.isEditing())
+				{
+					this.editor.graph.stopEditing();
+				}
+		
+				return mxUtils.getXml(this.editor.getGraphXml());
+			}
+			
+			EditorUi.prototype.importXml = function(data)
+			{
+				this.editor.graph.model.beginUpdate();
+				try
+				{
+					var doc = mxUtils.parseXml(data);
+					var model = new mxGraphModel();
+					var codec = new mxCodec(doc);
+					codec.decode(doc.documentElement, model);
+				
+					var children = model.getChildren(model.getChildAt(model.getRoot(), 0));
+					editorUi.editor.graph.importCells(children);
+				
+					// LATER: Why is hideDialog between begin-/endUpdate faster?
+					editorUi.hideDialog();
+				}
+				catch (e)
+				{
+					error = e;
+				}
+				finally
+				{
+					this.editor.graph.model.endUpdate();				
+				}
+				
+				this.editor.setModified(false);
+			}
 			
 			// Adds required resources (disables loading of fallback properties, this can only
 			// be used if we know that all keys are defined in the language specific file)
@@ -99,7 +150,12 @@
 				themes[Graph.prototype.defaultThemeName] = xhr[1].getDocumentElement(); 
 				
 				// Main
-				new EditorUi(new Editor(urlParams['chrome'] == '0', themes));
+				editorUi = new EditorUi(new Editor(urlParams['chrome'] == '0', themes));
+				
+				if(xmlImportData !== null) {
+					editorUi.importXml(xmlImportData);
+				}
+				
 			}, function()
 			{
 				document.body.innerHTML = '<center style="margin-top:10%;">Error loading resource files. Please check browser console.</center>';
