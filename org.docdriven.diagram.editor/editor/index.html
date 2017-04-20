@@ -65,10 +65,15 @@
 		// Extends EditorUi to update I/O action states based on availability of backend
 		(function()
 		{
+			if(typeof(javaMarkEditorDirtyObj) !== 'undefined') {
+				javaMarkEditorDirty = function(dirty) {
+					javaMarkEditorDirtyObj.markEditorDirty(dirty);
+				};
+			}
 		
-			var isSWTBrowser = typeof(javaMarkEditorDirty) !== 'undefined';
+			var isEmbeddedBrowser = typeof(javaMarkEditorDirty) !== 'undefined';
 		
-			if(isSWTBrowser) {
+			if(isEmbeddedBrowser) {
 				
 				Menus.prototype.defaultMenuItems = [];
 				
@@ -84,7 +89,7 @@
 			{
 				editorUiInit.apply(this, arguments);
 				
-				var enabled = !isSWTBrowser;
+				var enabled = !isEmbeddedBrowser;
 				
 				this.actions.get('export').setEnabled(enabled);
 				this.actions.get('open').setEnabled(enabled || Graph.fileSupport);
@@ -92,8 +97,19 @@
 				this.actions.get('save').setEnabled(enabled);
 				this.actions.get('saveAs').setEnabled(enabled);
 				this.actions.get('export').setEnabled(enabled);
-
 			};
+			
+			if(typeof(javaSaveEditor) !== 'undefined') {
+				var createKeyHandler = EditorUi.prototype.createKeyHandler
+				EditorUi.prototype.createKeyHandler = function(editor) {
+					var keyHandler = createKeyHandler.apply(this,arguments);
+					var editorUi = this;
+					keyHandler.bindControlKey(83, function() { // Ctrl+S
+						javaSaveEditor(editorUi.getXml());
+					});
+					return keyHandler;
+				}
+			}
 			
 			EditorUi.prototype.getXml = function()
 			{		
@@ -155,6 +171,10 @@
 				if(xmlImportData !== null) {
 					editorUi.importXml(xmlImportData);
 				}
+				if(isEmbeddedBrowser) {
+					editorUi.menubar.hideMenu();
+				}
+				
 				
 			}, function()
 			{

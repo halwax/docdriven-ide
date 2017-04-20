@@ -13,9 +13,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.jface.window.Window;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
@@ -30,16 +27,15 @@ import org.eclipse.ui.part.FileEditorInput;
 
 /**
  * The main editor.
- * 
  */
 public class DiagramEditor extends EditorPart {
-	/** Browser. */
-	private Browser browser;
-	private BrowserFunction function;
+
 	private boolean dirty;
 	
 	/** Base url of embedded web server.*/
 	private final String baseUrl;
+
+	private IDiagramBrowser diagramBrowser;
 	
 	/**
 	 * Constructor.
@@ -50,14 +46,17 @@ public class DiagramEditor extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-		
-		dirty = false;
-		
-		firePropertyChange(IEditorPart.PROP_DIRTY);
-		
+				
 		String content = getDiagramXML();
+		
+		doSave(monitor, content);
+	}
+
+	public void doSave(IProgressMonitor monitor, String content) {
+		dirty = false;
+		firePropertyChange(IEditorPart.PROP_DIRTY);		
 		try {
-			((FileEditorInput) getEditorInput()).getFile().setContents(new ByteArrayInputStream(content.getBytes()),
+			getFile().setContents(new ByteArrayInputStream(content.getBytes()),
 					true, true, monitor);
 		} catch (CoreException e) {
 			throw new RuntimeException(e);
@@ -88,17 +87,22 @@ public class DiagramEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		browser = new Browser(parent, SWT.NONE);
-		browser.setJavascriptEnabled(true);
-		browser.setUrl(baseUrl + "/editor/index.html" + 
-				"?file=" + ((FileEditorInput) getEditorInput()).getFile().getFullPath());
-		function = new MarkEditorDirtyCallback(this, browser, "javaMarkEditorDirty");
+		
+		if(OsCheck.OSType.Windows.equals(OsCheck.getOperatingSystemType())) {			
+			diagramBrowser = new SWTDiagramBrowser(parent, baseUrl, this);
+		} else {
+			diagramBrowser = new FXDiagramBrowser(parent, baseUrl, this);
+		}
+		
+	}
+	
+	protected void setDirty(boolean dirty) {
+		this.dirty = dirty;
 	}
 
 	@Override
 	public void dispose() {
-		function.dispose();
-		browser.dispose();
+		diagramBrowser.dispose();
 		super.dispose();
 	}
 
@@ -107,22 +111,8 @@ public class DiagramEditor extends EditorPart {
 		// empty block
 	}
 
-	static class MarkEditorDirtyCallback extends BrowserFunction {
-		private DiagramEditor editor;
-
-		MarkEditorDirtyCallback(DiagramEditor editor, Browser browser, String name) {
-			super(browser, name);
-			this.editor = editor;
-		}
-
-		public Object function(Object[] arguments) {
-			editor.dirty = (boolean) arguments[0];
-			editor.firePropertyChange(IEditorPart.PROP_DIRTY);
-			return null;
-		}
-	}
-
 	protected void performSaveAs(IProgressMonitor progressMonitor) {
+		
 		Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
 		final IEditorInput input = getEditorInput();
 
@@ -174,7 +164,12 @@ public class DiagramEditor extends EditorPart {
 	}
 
 	private String getDiagramXML() {
-		return (String) browser.evaluate("return editorUi.getXml()");
+		return diagramBrowser.getDiagramXML();
+	}
+	
+	@Override
+	protected void firePropertyChange(int propertyId) {
+		super.firePropertyChange(propertyId);
 	}
 
 	protected IProgressMonitor getProgressMonitor() {
@@ -187,6 +182,14 @@ public class DiagramEditor extends EditorPart {
 		}
 
 		return pm != null ? pm : new NullProgressMonitor();
+	}
+
+	public IPath getFilePath() {
+		return getFile().getFullPath();
+	}
+
+	private IFile getFile() {
+		return ((FileEditorInput) getEditorInput()).getFile();
 	}
 
 }
