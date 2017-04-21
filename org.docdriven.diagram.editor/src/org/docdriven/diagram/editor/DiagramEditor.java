@@ -31,12 +31,12 @@ import org.eclipse.ui.part.FileEditorInput;
 public class DiagramEditor extends EditorPart {
 
 	private boolean dirty;
-	
+
 	/** Base url of embedded web server.*/
 	private final String baseUrl;
 
 	private IDiagramBrowser diagramBrowser;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -46,15 +46,15 @@ public class DiagramEditor extends EditorPart {
 
 	@Override
 	public void doSave(IProgressMonitor monitor) {
-				
+
 		String content = getDiagramXML();
-		
+
 		doSave(monitor, content);
 	}
 
 	public void doSave(IProgressMonitor monitor, String content) {
 		dirty = false;
-		firePropertyChange(IEditorPart.PROP_DIRTY);		
+		firePropertyChange(IEditorPart.PROP_DIRTY);
 		try {
 			getFile().setContents(new ByteArrayInputStream(content.getBytes()),
 					true, true, monitor);
@@ -87,15 +87,15 @@ public class DiagramEditor extends EditorPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		
-		if(OsCheck.OSType.Windows.equals(OsCheck.getOperatingSystemType())) {			
-			diagramBrowser = new SWTDiagramBrowser(parent, baseUrl, this);
-		} else {
+
+		if(OsCheck.OSType.Windows.equals(OsCheck.getOperatingSystemType())) {
 			diagramBrowser = new FXDiagramBrowser(parent, baseUrl, this);
+		} else {
+			diagramBrowser = new SWTDiagramBrowser(parent, baseUrl, this);
 		}
-		
+
 	}
-	
+
 	protected void setDirty(boolean dirty) {
 		this.dirty = dirty;
 	}
@@ -112,7 +112,7 @@ public class DiagramEditor extends EditorPart {
 	}
 
 	protected void performSaveAs(IProgressMonitor progressMonitor) {
-		
+
 		Shell shell = PlatformUI.getWorkbench().getModalDialogShellProvider().getShell();
 		final IEditorInput input = getEditorInput();
 
@@ -166,7 +166,7 @@ public class DiagramEditor extends EditorPart {
 	private String getDiagramXML() {
 		return diagramBrowser.getDiagramXML();
 	}
-	
+
 	@Override
 	protected void firePropertyChange(int propertyId) {
 		super.firePropertyChange(propertyId);

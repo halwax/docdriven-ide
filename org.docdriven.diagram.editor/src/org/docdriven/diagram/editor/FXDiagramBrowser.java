@@ -29,10 +29,10 @@ public class FXDiagramBrowser implements IDiagramBrowser {
 
 		browser = new WebView();
 		WebEngine webEngine = browser.getEngine();
-		
+
 		JSObject jsobj = (JSObject) webEngine.executeScript("window");
 		jsobj.setMember("javaEditorObj", new EditorObject(diagramEditor));
-		
+
 		borderPane.setCenter(browser);
 
 		webEngine.load(baseUrl + "/editor/index.html" + "?file=" + diagramEditor.getFilePath());
@@ -45,13 +45,11 @@ public class FXDiagramBrowser implements IDiagramBrowser {
 
 	@Override
 	public String getDiagramXML() {
-		return (String) browser.getEngine().executeScript("return editorUi.getXml()");
+		return (String) browser.getEngine().executeScript("editorUi.getXml()");
 	}
-	
-	
-	
+
 	public static class EditorObject {
-		
+
 		private DiagramEditor diagramEditor;
 
 		EditorObject(DiagramEditor diagramEditor) {
@@ -62,7 +60,7 @@ public class FXDiagramBrowser implements IDiagramBrowser {
 			diagramEditor.setDirty(dirty);
 			diagramEditor.firePropertyChange(IEditorPart.PROP_DIRTY);
 		}
-		
+
 		public void saveEditor(String content) {
 			diagramEditor.doSave(diagramEditor.getProgressMonitor(),content);
 		}
