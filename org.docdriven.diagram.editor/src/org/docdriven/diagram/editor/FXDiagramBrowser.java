@@ -17,6 +17,7 @@ import netscape.javascript.JSObject;
 public class FXDiagramBrowser implements IDiagramBrowser {
 
 	private FXCanvas canvas;
+	private WebView browser;
 
 	public FXDiagramBrowser(Composite parent, String baseUrl, DiagramEditor diagramEditor) {
 		canvas = new FXCanvas(parent, SWT.NONE);
@@ -26,11 +27,11 @@ public class FXDiagramBrowser implements IDiagramBrowser {
 		Scene scene = new Scene(borderPane);
 		canvas.setScene(scene);
 
-		WebView browser = new WebView();
+		browser = new WebView();
 		WebEngine webEngine = browser.getEngine();
 		
 		JSObject jsobj = (JSObject) webEngine.executeScript("window");
-		jsobj.setMember("javaMarkEditorDirtyObj", new MarkEditorDirtyCallback(diagramEditor));
+		jsobj.setMember("javaEditorObj", new EditorObject(diagramEditor));
 		
 		borderPane.setCenter(browser);
 
@@ -44,19 +45,26 @@ public class FXDiagramBrowser implements IDiagramBrowser {
 
 	@Override
 	public String getDiagramXML() {
-		return "";
+		return (String) browser.getEngine().executeScript("return editorUi.getXml()");
 	}
 	
-	public static class MarkEditorDirtyCallback {
+	
+	
+	public static class EditorObject {
+		
 		private DiagramEditor diagramEditor;
 
-		MarkEditorDirtyCallback(DiagramEditor diagramEditor) {
+		EditorObject(DiagramEditor diagramEditor) {
 			this.diagramEditor = diagramEditor;
 		}
 
 		public void markEditorDirty(boolean dirty) {
 			diagramEditor.setDirty(dirty);
 			diagramEditor.firePropertyChange(IEditorPart.PROP_DIRTY);
+		}
+		
+		public void saveEditor(String content) {
+			diagramEditor.doSave(diagramEditor.getProgressMonitor(),content);
 		}
 	}
 

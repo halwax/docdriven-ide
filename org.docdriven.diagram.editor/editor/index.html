@@ -65,9 +65,12 @@
 		// Extends EditorUi to update I/O action states based on availability of backend
 		(function()
 		{
-			if(typeof(javaMarkEditorDirtyObj) !== 'undefined') {
+			if(typeof(javaEditorObj) !== 'undefined') {
 				javaMarkEditorDirty = function(dirty) {
-					javaMarkEditorDirtyObj.markEditorDirty(dirty);
+					javaEditorObj.markEditorDirty(dirty);
+				};
+				javaSaveEditor = function(content) {
+					javaEditorObj.saveEditor(content);
 				};
 			}
 		
