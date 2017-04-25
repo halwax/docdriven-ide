@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.docdriven.diagram.editor.feature_0.0.1.qualifier.jar" id="org.docdriven.diagram.editor.feature" version="0.0.1.qualifier">
+      <category name="DocDriven IDE"/>
+   </feature>
+   <category-def name="DocDriven IDE" label="DocDriven IDE"/>
+</site>
