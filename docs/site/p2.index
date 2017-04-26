@@ -1,4 +1,4 @@
-#Tue Apr 25 22:53:51 CEST 2017
+#Wed Apr 26 08:41:56 CEST 2017
 version=1
 metadata.repository.factory.order=content.xml.xz,content.xml,\!
 artifact.repository.factory.order=artifacts.xml.xz,artifacts.xml,\!
