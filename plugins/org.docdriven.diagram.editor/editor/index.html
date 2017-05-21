@@ -85,7 +85,11 @@
 					editorModified.apply(this, arguments);
 					javaMarkEditorDirty.apply(this, arguments);
 				}
+				
+				EditorUi.prototype.menubarHeight = 0;
 			}
+			
+			
 		
 			var editorUiInit = EditorUi.prototype.init;
 			EditorUi.prototype.init = function()
@@ -100,6 +104,7 @@
 				this.actions.get('save').setEnabled(enabled);
 				this.actions.get('saveAs').setEnabled(enabled);
 				this.actions.get('export').setEnabled(enabled);
+				
 			};
 			
 			if(typeof(javaSaveEditor) !== 'undefined') {
@@ -184,6 +189,43 @@
 				document.body.innerHTML = '<center style="margin-top:10%;">Error loading resource files. Please check browser console.</center>';
 			});
 		})();
+		
+		function getExportJson() {
+		
+				// scale
+				var s = 1;
+		
+				// border
+				var b = 0;				
+				
+				var graph = editorUi.editor.graph;
+		
+		    	var bounds = graph.getGraphBounds();
+    	
+				// New image export
+				var xmlDoc = mxUtils.createXmlDocument();
+				var root = xmlDoc.createElement('output');
+				xmlDoc.appendChild(root);
+				
+			    // Renders graph. Offset will be multiplied with state's scale when painting state.
+				var xmlCanvas = new mxXmlCanvas2D(root);
+				xmlCanvas.translate(Math.floor((b / s - bounds.x) / graph.view.scale),
+					Math.floor((b / s - bounds.y) / graph.view.scale));
+				xmlCanvas.scale(s / graph.view.scale);
+				
+				var imgExport = new mxImageExport()
+			    imgExport.drawState(graph.getView().getState(graph.model.root), xmlCanvas);
+			    
+				// Puts request data together
+				var w = Math.ceil(bounds.width * s / graph.view.scale + 2 * b);
+				var h = Math.ceil(bounds.height * s / graph.view.scale + 2 * b);
+				
+				return JSON.stringify({
+					xml : mxUtils.getXml(root),
+					w : w,
+					h : h
+				});
+		}
 	</script>
 </body>
 </html>

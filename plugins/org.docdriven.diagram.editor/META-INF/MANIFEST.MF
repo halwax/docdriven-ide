@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.docdriven.diagram.editor;singleton:=true
 Bundle-Version: 0.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: lib/nanohttpd-2.3.1.jar,
+ lib/jgraphx-v3.7.0.0.jar,
  .
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.runtime,
@@ -14,6 +15,9 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.ui.editors,
  org.eclipse.jface.text,
  org.apache.commons.lang3;bundle-version="3.1.0",
- org.eclipse.fx.javafx;bundle-version="2.2.0"
+ org.eclipse.fx.javafx;bundle-version="2.2.0",
+ org.eclipse.ui.forms,
+ com.fasterxml.jackson.core.jackson-core,
+ com.fasterxml.jackson.core.jackson-databind
 Bundle-Activator: org.docdriven.diagram.editor.Activator
 Bundle-ActivationPolicy: lazy

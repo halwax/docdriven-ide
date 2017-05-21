@@ -40,11 +40,11 @@ public class FXDiagramBrowser implements IDiagramBrowser {
 	public void dispose() {
 		canvas.dispose();
 	}
-
+	
 	@Override
-	public String getDiagramXML() {
-		return (String) browser.getEngine().executeScript("editorUi.getXml()");
-	}
+	public String executeScript(String script) {
+		return (String) browser.getEngine().executeScript(script);
+	}	
 
 	public static class EditorObject {
 

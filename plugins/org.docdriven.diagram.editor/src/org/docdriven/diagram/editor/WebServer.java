@@ -29,19 +29,18 @@ public class WebServer extends NanoHTTPD {
 	}
 
 	@Override
-	public Response serve(String uri, Method method,
-			Map<String, String> headers, Map<String, String> parms,
+	public Response serve(String uri, Method method, Map<String, String> headers, Map<String, String> parms,
 			Map<String, String> files) {
-		
+
 		// request file to edit
 		if (parms.containsKey("file")) {
 			return getEditorFile(parms.get("file"));
 
-		// request project relative resources
+			// request project relative resources
 		} else if (uri.startsWith("/_ws_")) {
 			return getRelativeProjectResource(uri.substring(5));
 		}
-		
+
 		URL resource = bundle.getResource(uri);
 		if (resource != null) {
 			try {
@@ -50,15 +49,15 @@ public class WebServer extends NanoHTTPD {
 				throw new RuntimeException(e);
 			}
 		}
-		
+
 		// in other case display debug info
-		
-        return newFixedLengthResponse(Response.Status.NOT_FOUND, getMimeType(uri), "");
+
+		return newFixedLengthResponse(Response.Status.NOT_FOUND, getMimeType(uri), "");
 	}
-	
+
 	private Response getRelativeProjectResource(String uri) {
-		IWorkspace workspace = ResourcesPlugin.getWorkspace();  
-		IFile file = workspace.getRoot().getFile(new Path(uri));  
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+		IFile file = workspace.getRoot().getFile(new Path(uri));
 		try {
 			return newChunkedResponse(Response.Status.OK, getMimeType(uri), file.getContents());
 		} catch (CoreException e) {
@@ -67,24 +66,32 @@ public class WebServer extends NanoHTTPD {
 	}
 
 	private Response getEditorFile(String f) {
+
+		URL resource = bundle.getResource("/editor/index.html");
+		String editorHtml;
 		try {
-			
-			URL resource = bundle.getResource("/editor/index.html");
-			String editorHtml = getStringFromStream(resource.openStream());
-			IWorkspace workspace = ResourcesPlugin.getWorkspace();
-			
+			editorHtml = getStringFromStream(resource.openStream());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		IWorkspace workspace = ResourcesPlugin.getWorkspace();
+
+		try {
+
 			IFile file = workspace.getRoot().getFile(new Path(f));
 			if (file.exists()) {
 				String content = getStringFromStream(file.getContents(), file.getCharset());
 				String javaContent = StringEscapeUtils.escapeJava(content);
-				editorHtml = editorHtml.replace("var xmlImportData = null;", "var xmlImportData = \"" + javaContent + "\"");
+				editorHtml = editorHtml.replace("var xmlImportData = null;",
+						"var xmlImportData = \"" + javaContent + "\"");
 			}
-			
+
 			return newFixedLengthResponse(Response.Status.OK, "text/html", editorHtml);
-			
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+
+		} catch (CoreException e) {
+			return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "text/html", e.getMessage());
 		}
+
 	}
 
 	private static String getMimeType(String uri) {
@@ -108,23 +115,22 @@ public class WebServer extends NanoHTTPD {
 		if (uri.endsWith(".js")) {
 			return "application/javascript";
 		}
-		
+
 		if (uri.endsWith(".css")) {
 			return "text/css";
 		}
-		
-		
+
 		return "text/plain";
 	}
-	
+
 	public static String getStringFromStream(InputStream input) {
 		return getStringFromStream(input, "UTF-8");
 	}
-	
+
 	public static String getStringFromStream(InputStream input, String charset) {
-        try (Scanner scanner = new Scanner(input, charset)){
-            scanner.useDelimiter("\\Z");
-            return scanner.hasNext() ? scanner.next() : "";
-        }
-    }
+		try (Scanner scanner = new Scanner(input, charset)) {
+			scanner.useDelimiter("\\Z");
+			return scanner.hasNext() ? scanner.next() : "";
+		}
+	}
 }

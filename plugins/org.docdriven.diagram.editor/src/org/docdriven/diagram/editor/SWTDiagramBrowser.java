@@ -29,9 +29,11 @@ public class SWTDiagramBrowser implements IDiagramBrowser {
 		browser.dispose();
 	}
 
-	public String getDiagramXML() {
-		return (String) browser.evaluate("return editorUi.getXml()");
+	@Override
+	public String executeScript(String script) {
+		return (String) browser.evaluate("return " + script);
 	}
+	
 	
 	static class SaveEditorFunction extends BrowserFunction {
 		private DiagramEditor diagramEditor;
