@@ -23,9 +23,11 @@
 	
 		<module>releng/org.docdriven.ide.target</module>
 		
-		<module>plugins/org.docdriven.diagram.editor</module>
+    <module>plugins/org.docdriven.diagram.editor</module>
+    <module>plugins/org.docdriven.script</module>
 
     <module>features/org.docdriven.diagram.editor.feature</module>
+    <module>features/org.docdriven.script.feature</module>
 		
     <module>releng/org.docdriven.ide.p2</module>
 		
