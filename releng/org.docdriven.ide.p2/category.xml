@@ -3,5 +3,8 @@
    <feature url="features/org.docdriven.diagram.editor.feature_0.0.1.qualifier.jar" id="org.docdriven.diagram.editor.feature" version="0.0.1.qualifier">
       <category name="DocDriven IDE"/>
    </feature>
+   <feature url="features/org.docdriven.script.feature_0.0.1.qualifier.jar" id="org.docdriven.script.feature" version="0.0.1.qualifier">
+      <category name="DocDriven IDE"/>
+   </feature>
    <category-def name="DocDriven IDE" label="DocDriven IDE"/>
 </site>

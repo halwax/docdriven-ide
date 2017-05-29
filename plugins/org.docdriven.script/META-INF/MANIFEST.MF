@@ -16,4 +16,5 @@ Bundle-Activator: org.docdriven.script.Activator
 Require-Bundle: org.junit;resolution:=optional,
  org.assertj;resolution:=optional,
  org.mockito;resolution:=optional,
- org.objenesis;resolution:=optional
+ org.objenesis;resolution:=optional,
+ org.mozilla.javascript

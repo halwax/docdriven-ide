@@ -18,7 +18,7 @@ new Vue({
     require(['vs/editor/editor.main'], function () {
       appInstance.scriptEditor = monaco.editor.create(scriptEditorDiv, {
         value: [
-          'return ""'
+          'return {};'
         ].join('\n'),
         language: 'javascript'
       });

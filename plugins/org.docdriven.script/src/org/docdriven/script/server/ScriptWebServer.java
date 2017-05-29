@@ -1,6 +1,8 @@
 package org.docdriven.script.server;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.Map;
 import java.util.Scanner;
@@ -41,7 +43,7 @@ public class ScriptWebServer extends NanoHTTPD {
 	@Override
 	public Response serve(String uri, Method method, Map<String, String> headers, Map<String, String> parms,
 			Map<String, String> files) {
-
+	
 		if(Method.GET.equals(method)) {
 			URL resource = bundle.getResource(uri);
 			if (resource != null) {
@@ -59,7 +61,12 @@ public class ScriptWebServer extends NanoHTTPD {
 				String json = new JsScriptEngine().runAndReturnJSON(script);
 				return newFixedLengthResponse(Response.Status.OK, CONTENT_TYPE_APPLICATION_JSON, json);
 			} catch (ScriptException e) {
-				return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, CONTENT_TYPE_TEXT_PLAIN, e.getMessage());
+				
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				e.printStackTrace(pw);
+				
+				return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, CONTENT_TYPE_TEXT_PLAIN, sw.toString());
 			}
 		}
 		

@@ -64,7 +64,7 @@ public class HttpUtils {
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 		con.setRequestMethod(POST);
 		con.setRequestProperty("content-type",contentType); 
-		con.setRequestProperty("content-length", Integer.toString(content.length()));
+		con.setRequestProperty("content-length", Integer.toString(content.getBytes().length));
 
 		// Send post request
 		con.setDoOutput(true);

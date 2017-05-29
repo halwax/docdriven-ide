@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="org.docdriven.ide.target" sequenceNumber="17">
+<?pde version="3.8"?><target name="org.docdriven.ide.target" sequenceNumber="18">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.apache.commons.lang3.source" version="3.1.0.v201403281430"/>
@@ -29,6 +29,11 @@
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.junit" version="4.12.0.v201504281640"/>
 <unit id="org.junit.source" version="4.12.0.v201504281640"/>
+<repository location="http://download.eclipse.org/tools/orbit/R-builds/R20170516192513/repository"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.mozilla.javascript" version="1.7.5.v201504281450"/>
+<unit id="org.mozilla.javascript.source" version="1.7.5.v201504281450"/>
 <repository location="http://download.eclipse.org/tools/orbit/R-builds/R20170516192513/repository"/>
 </location>
 </locations>
