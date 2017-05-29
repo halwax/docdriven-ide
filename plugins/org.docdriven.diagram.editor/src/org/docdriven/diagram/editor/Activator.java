@@ -40,7 +40,9 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	/**
-	 * Try to found unused port.
+	 * Try to find an unused port, in the Dynamic and/or Private Ports Range (49152-65535).
+	 * See https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml.
+	 * Give up after 100 tries to find an unused port.
 	 * 
 	 * @return unused port.
 	 * @throws Exception
@@ -49,14 +51,13 @@ public class Activator extends AbstractUIPlugin {
 	private int detectFreePort() throws Exception {
 		IPreferenceStore pref = getPreferenceStore();
 		int port = pref.getInt(CFG_PORT);
-		if (port == 0) {
-			port = 33445;
+		if(port==0) {
+			port = 49152;
 		}
-		port = 19455;
 
 		boolean found = false;
 		int tries = 0;
-		while (!found && tries < 10) {
+		while (!found && tries < 100) {
 			try {
 				ServerSocket socket = new ServerSocket(port);
 				socket.close();

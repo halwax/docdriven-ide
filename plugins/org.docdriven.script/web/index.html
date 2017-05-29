@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Doc Driven Script">
+  <title>Doc Driven Script</title>
+
+  <link rel="stylesheet" href="css/pure-min.css">
+  <link rel="stylesheet" href="css/grids-responsive-min.css">
+  <link rel="stylesheet" href="css/app.css">
+
+  <script src="vue/vue.js"></script>
+  <script src="vs/loader.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <div id="layout" class="pure-g">
+      <div class="sidebar pure-u-1 pure-u-md-1-5">
+        <div class="header">
+          <h1 class="brand-title">Doc Driven Script</h1>
+          <h2 class="brand-tagline">Running Scripts on Eclipse</h2>
+        </div>
+      </div>
+    </div>
+    <div class="content pure-u-1 pure-u-md-4-5">
+      <!-- A wrapper for all the scripts -->
+      <div class="posts">
+        <h1 class="content-subhead">Scripts</h1>
+
+        <template v-for="script in scripts">
+          <!-- A single blog post -->
+          <section class="post">
+            <header class="post-header">
+              <!--
+          <img width="48" height="48" alt="Tilo Mitra's avatar" class="post-avatar" src="/img/common/tilo-avatar.png">
+          -->
+              <h2 class="post-title">{{script.title}}</h2>
+
+              <!--
+          <p class="post-meta">
+            By <a href="#" class="post-author">Tilo Mitra</a> under <a class="post-category post-category-design" href="#">CSS</a>            <a class="post-category post-category-pure" href="#">Pure</a>
+          </p>
+          -->
+            </header>
+            <div class="post-description">
+              <div>
+                <div class="post-meta">Script</div>
+                <div>
+                  <div id="scriptEditor" style="width:100%; height:100%; min-height:150px" />
+                </div>
+                <button class="pure-button pure-button-primary" @click="runScript">Run</button>
+              </div>
+              <div>
+                <div class="post-meta">Result</div>
+                <div id="resultEditor" style="width:100%; height:100%; min-height:150px" />
+              </div>
+            </div>
+          </section>
+        </template>
+      </div>
+
+      <!--
+    <div class="footer">
+      <div class="pure-menu pure-menu-horizontal">
+        <ul>
+          <li class="pure-menu-item"><a href="http://purecss.io/" class="pure-menu-link">About</a></li>
+          <li class="pure-menu-item"><a href="http://twitter.com/yuilibrary/" class="pure-menu-link">Twitter</a></li>
+          <li class="pure-menu-item"><a href="http://github.com/yahoo/pure/" class="pure-menu-link">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    -->
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>

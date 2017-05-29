@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="org.docdriven.ide.target" sequenceNumber="14">
+<?pde version="3.8"?><target name="org.docdriven.ide.target" sequenceNumber="16">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.apache.commons.lang3.source" version="3.1.0.v201403281430"/>
@@ -15,6 +15,16 @@
 <unit id="com.fasterxml.jackson.core.jackson-databind" version="2.5.0.v201504151636"/>
 <unit id="com.fasterxml.jackson.core.jackson-core" version="2.5.0.v201504151636"/>
 <repository location="http://download.eclipse.org/tools/orbit/downloads/drops/R20160520211859/repository/"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.assertj.source" version="1.7.1.v20170413-2026"/>
+<unit id="org.assertj" version="1.7.1.v20170413-2026"/>
+<repository location="http://download.eclipse.org/tools/orbit/R-builds/R20170516192513/repository"/>
+</location>
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.mockito.source" version="1.9.5.v201605172210"/>
+<unit id="org.mockito" version="1.9.5.v201605172210"/>
+<repository location="http://download.eclipse.org/tools/orbit/R-builds/R20170516192513/repository"/>
 </location>
 </locations>
 </target>

@@ -67,7 +67,7 @@ public class WebServer extends NanoHTTPD {
 
 	private Response getEditorFile(String f) {
 
-		URL resource = bundle.getResource("/editor/index.html");
+		URL resource = bundle.getResource("/web/index.html");
 		String editorHtml;
 		try {
 			editorHtml = getStringFromStream(resource.openStream());
