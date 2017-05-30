@@ -61,9 +61,15 @@ new Vue({
         request.setRequestHeader('content-type','application/javascript');
         request.addEventListener('load', function (event) {
           if (request.status >= 200 && request.status < 300) {
-            var resultObj = JSON.parse(request.responseText);
-            var prettyResultJSON = JSON.stringify(resultObj, null, 2);
-            appInstance.resultEditor.setValue(prettyResultJSON);
+            var responseText = request.responseText;
+            if(responseText === 'undefined') {
+              responseText = '';
+            } else {
+              var resultObj = JSON.parse(request.responseText);
+              var prettyResultJSON = JSON.stringify(resultObj, null, 2);
+              responseText = prettyResultJSON;
+            }
+            appInstance.resultEditor.setValue(responseText);
           } else {
             appInstance.resultEditor.setValue(request.responseText);
           }

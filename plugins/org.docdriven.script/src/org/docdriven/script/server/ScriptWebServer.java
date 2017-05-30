@@ -9,8 +9,7 @@ import java.util.Scanner;
 
 import javax.script.ScriptException;
 
-import org.docdriven.script.JsScriptEngine;
-import org.osgi.framework.Bundle;
+import org.docdriven.script.Activator;
 
 import fi.iki.elonen.NanoHTTPD;
 
@@ -33,11 +32,11 @@ public class ScriptWebServer extends NanoHTTPD {
 	
 	private static final String URI_SCRIPTS = "/scripts";
 
-	private final Bundle bundle;
+	private final Activator activator;
 
-	public ScriptWebServer(int port, Bundle bundle) {
+	public ScriptWebServer(int port, Activator activator) {
 		super(port);
-		this.bundle = bundle;
+		this.activator = activator;
 	}
 
 	@Override
@@ -45,7 +44,7 @@ public class ScriptWebServer extends NanoHTTPD {
 			Map<String, String> files) {
 	
 		if(Method.GET.equals(method)) {
-			URL resource = bundle.getResource(uri);
+			URL resource = activator.getBundle().getResource(uri);
 			if (resource != null) {
 				try {
 					return newChunkedResponse(Response.Status.OK, getMimeType(uri), resource.openStream());
@@ -58,7 +57,7 @@ public class ScriptWebServer extends NanoHTTPD {
 		if(Method.POST.equals(method) && URI_SCRIPTS.equals(uri) && CONTENT_TYPE_APPLICATION_JAVASCRIPT.equalsIgnoreCase(headers.get(CONTENT_TYPE))) {
 			String script = files.get(POST_DATA);
 			try {
-				String json = new JsScriptEngine().runAndReturnJSON(script);
+				String json = activator.createScriptEngine().runAndReturnJSON(script);
 				return newFixedLengthResponse(Response.Status.OK, CONTENT_TYPE_APPLICATION_JSON, json);
 			} catch (ScriptException e) {
 				

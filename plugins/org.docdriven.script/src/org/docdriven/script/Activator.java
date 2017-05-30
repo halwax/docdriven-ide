@@ -3,6 +3,9 @@ package org.docdriven.script;
 import java.net.ServerSocket;
 import java.text.MessageFormat;
 
+import org.docdriven.script.engines.DefaultJsScriptEngine;
+import org.docdriven.script.engines.IJsScriptEngine;
+import org.docdriven.script.engines.RhinoJsScriptEngine;
 import org.docdriven.script.server.ScriptWebServer;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
@@ -16,6 +19,7 @@ public class Activator extends Plugin implements BundleActivator {
 	public static final String PLUGIN_ID = "org.docdriven.script";
 	/** Config param key for HTTP port. */
 	public static final String CFG_PORT = "script.port";
+	public static final String JS_ENGINE_DEFAULT = "js.engine.default";
 	
 	private static Activator fInstance;
 
@@ -27,6 +31,7 @@ public class Activator extends Plugin implements BundleActivator {
 	private ScriptWebServer server;
 	private int webServerPort;
 	private ILog scriptLog;
+	private boolean useJsEngineDefault;
 	
 	public void setScriptLog(ILog scriptLog) {
 		this.scriptLog = scriptLog;
@@ -43,8 +48,10 @@ public class Activator extends Plugin implements BundleActivator {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		
+		useJsEngineDefault = Boolean.parseBoolean(System.getProperty(JS_ENGINE_DEFAULT, "false"));
+		
 		webServerPort = detectFreePort();
-		server = new ScriptWebServer(webServerPort, context.getBundle());
+		server = new ScriptWebServer(webServerPort, this);
 		server.start();
 		
 		getScriptLog().log(new Status(IStatus.INFO, PLUGIN_ID, MessageFormat.format("Script server started on port {0}.",webServerPort)));
@@ -65,6 +72,14 @@ public class Activator extends Plugin implements BundleActivator {
 
 	public BundleContext getContext() {
 		return fContext;
+	}
+	
+	public IJsScriptEngine createScriptEngine() {
+		if(useJsEngineDefault) {
+			return new DefaultJsScriptEngine();
+		}
+		
+		return new RhinoJsScriptEngine();
 	}
 	
 	/**

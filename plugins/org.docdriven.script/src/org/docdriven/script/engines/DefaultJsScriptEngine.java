@@ -1,17 +1,18 @@
-package org.docdriven.script;
+package org.docdriven.script.engines;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.docdriven.script.Activator;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.wiring.BundleWiring;
 
-public class JsScriptEngine {
+public class DefaultJsScriptEngine implements IJsScriptEngine {
 	
 	public String runAndReturnJSON(String jsScript) throws ScriptException {
 		ScriptEngine scriptEngine = setupEngine();
-		String wrapInResponseFunctionScript = wrapInResponseFunction(jsScript);
+		String wrapInResponseFunctionScript = ScriptEngineHelper.wrapInResponseFunction(jsScript);
 		try {			
 			Object result = scriptEngine.eval(wrapInResponseFunctionScript);
 			return toString(result);
@@ -22,16 +23,6 @@ public class JsScriptEngine {
 
 	private String toString(Object eval) {
 		return eval==null ? "" : eval.toString();
-	}
-
-	private String wrapInResponseFunction(String script) {
-		StringBuffer anonymusFunctionBuilder = new StringBuffer();
-		anonymusFunctionBuilder.append("JSON.stringify((function(){");
-		anonymusFunctionBuilder.append(System.lineSeparator());
-		anonymusFunctionBuilder.append(script);
-		anonymusFunctionBuilder.append(System.lineSeparator());
-		anonymusFunctionBuilder.append("})())");
-		return anonymusFunctionBuilder.toString();
 	}
 
 	private ScriptEngine setupEngine() throws ScriptException {
