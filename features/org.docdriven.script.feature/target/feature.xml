@@ -2,7 +2,7 @@
 <feature
       id="org.docdriven.script.feature"
       label="Script Feature"
-      version="0.0.1.201705290749">
+      version="0.0.1.201705300647">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -18,8 +18,8 @@
 
    <plugin
          id="org.docdriven.script"
-         download-size="53"
-         install-size="61"
-         version="0.0.1.201705290749"/>
+         download-size="55"
+         install-size="63"
+         version="0.0.1.201705300647"/>
 
 </feature>
