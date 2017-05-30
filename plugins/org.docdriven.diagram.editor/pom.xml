@@ -5,7 +5,7 @@
 
 	<artifactId>org.docdriven.diagram.editor</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	<name>Docdriven Diagram Editor</name>
+	<name>Doc Driven Diagram Editor</name>
 
 	<parent>
 		<version>0.0.1-SNAPSHOT</version>

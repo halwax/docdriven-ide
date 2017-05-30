@@ -4,7 +4,7 @@
 
 	<artifactId>org.docdriven.diagram.editor.feature</artifactId>
 	<packaging>eclipse-feature</packaging>
-	<name>DocDriven Diagram Editor Feature</name>
+	<name>Doc Driven Diagram Editor Feature</name>
 
 	<parent>
 		<version>0.0.1-SNAPSHOT</version>

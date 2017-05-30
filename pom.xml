@@ -4,8 +4,8 @@
 		<maven>3.0</maven>
 	</prerequisites>
 
-	<name>Docdriven IDE</name>
-	<description>Docdriven IDE</description>
+	<name>Doc Driven IDE</name>
+	<description>Doc Driven IDE</description>
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.docdriven.ide</groupId>
@@ -30,6 +30,7 @@
     <module>features/org.docdriven.diagram.editor.feature</module>
     <module>features/org.docdriven.script.feature</module>
     <module>features/org.docdriven.script.ui.feature</module>
+    <module>features/org.docdriven.script.ui.dependencies.feature</module>
 		
     <module>releng/org.docdriven.ide.p2</module>
 		

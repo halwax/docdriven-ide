@@ -5,7 +5,7 @@
 
 	<artifactId>org.docdriven.ide.target</artifactId>
 	<packaging>eclipse-target-definition</packaging>
-	<name>Docdriven IDE Target Definition</name>
+	<name>Doc Driven IDE Target Definition</name>
 
 	<parent>
 		<version>0.0.1-SNAPSHOT</version>
