@@ -9,5 +9,8 @@
    <feature url="features/org.docdriven.script.ui.feature_0.0.1.qualifier.jar" id="org.docdriven.script.ui.feature" version="0.0.1.qualifier">
       <category name="DocDriven IDE"/>
    </feature>
+   <feature url="features/org.docdriven.script.ui.dependencies.feature_0.0.1.qualifier.jar" id="org.docdriven.script.ui.dependencies.feature" version="0.0.1.qualifier">
+      <category name="DocDriven IDE"/>
+   </feature>
    <category-def name="DocDriven IDE" label="DocDriven IDE"/>
 </site>
