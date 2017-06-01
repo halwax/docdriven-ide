@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Doc Driven Script UI
+Bundle-SymbolicName: org.docdriven.script.ui;singleton:=true
+Bundle-Version: 0.0.1.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-Activator: org.docdriven.script.ui.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime

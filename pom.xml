@@ -25,6 +25,7 @@
 		
     <module>plugins/org.docdriven.diagram.editor</module>
     <module>plugins/org.docdriven.script</module>
+    <module>plugins/org.docdriven.script.ui</module>
     <module>plugins/org.docdriven.script.ui.bot</module>
 
     <module>features/org.docdriven.diagram.editor.feature</module>
