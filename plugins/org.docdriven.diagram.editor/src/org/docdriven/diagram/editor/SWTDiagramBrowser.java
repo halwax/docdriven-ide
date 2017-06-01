@@ -13,11 +13,10 @@ public class SWTDiagramBrowser implements IDiagramBrowser {
 	private BrowserFunction markEditorDirtyFunction;
 	private SaveEditorFunction saveEditorFunction;
 	
-	public SWTDiagramBrowser(Composite parent, String baseUrl, DiagramEditor diagramEditor) {
+	public SWTDiagramBrowser(Composite parent, String url, DiagramEditor diagramEditor) {
 		browser = new Browser(parent, SWT.NONE);
 		browser.setJavascriptEnabled(true);
-		browser.setUrl(baseUrl + "/editor/index.html" + 
-				"?file=" + diagramEditor.getFilePath());		
+		browser.setUrl(url);		
 		
 		markEditorDirtyFunction = new MarkEditorDirtyFunction(diagramEditor, browser, "javaMarkEditorDirty");
 		saveEditorFunction = new SaveEditorFunction(diagramEditor, browser, "javaSaveEditor");

@@ -17,7 +17,7 @@ public class FXDiagramBrowser implements IDiagramBrowser {
 	private FXCanvas canvas;
 	private WebView browser;
 
-	public FXDiagramBrowser(Composite parent, String baseUrl, DiagramEditor diagramEditor) {
+	public FXDiagramBrowser(Composite parent, String url, DiagramEditor diagramEditor) {
 		canvas = new FXCanvas(parent, SWT.NONE);
 		canvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
@@ -33,7 +33,7 @@ public class FXDiagramBrowser implements IDiagramBrowser {
 
 		borderPane.setCenter(browser);
 
-		webEngine.load(baseUrl + "/editor/index.html" + "?file=" + diagramEditor.getFilePath());
+		webEngine.load(url);
 	}
 
 	@Override

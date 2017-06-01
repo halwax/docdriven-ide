@@ -122,11 +122,24 @@ public class DiagramEditor extends EditorPart {
 		form.setText("Diagram");
 
 		IToolBarManager toolBarManager = form.getToolBarManager();
+		ImageDescriptor webLinkImageDesc = AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.ui.browser",
+				"$nl$/icons/obj16/external_browser.png");
 		ImageDescriptor binaryFileImageDesc = AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.ui.ide",
 				"$nl$/icons/full/etool16/build_exec.png");
 		ImageDescriptor textFileImageDesc = AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.ui.ide",
 				"$nl$/icons/full/obj16/welcome_editor.png");
 
+		String url = baseUrl + "/editor/index.html" + "?file=" + getFilePath();
+		
+		toolBarManager.add(new Action("Open URL", webLinkImageDesc) {
+			@Override
+			public void run() {
+
+				org.eclipse.swt.program.Program.launch(url);
+
+			}
+		});
+		
 		toolBarManager.add(new Action("Export SVG", textFileImageDesc) {
 			@Override
 			public void run() {
@@ -200,9 +213,9 @@ public class DiagramEditor extends EditorPart {
 		browserComposite.setLayout(new FillLayout());
 
 		if (OsCheck.OSType.Windows.equals(OsCheck.getOperatingSystemType())) {
-			diagramBrowser = new FXDiagramBrowser(browserComposite, baseUrl, this);
+			diagramBrowser = new FXDiagramBrowser(browserComposite, url, this);
 		} else {
-			diagramBrowser = new SWTDiagramBrowser(browserComposite, baseUrl, this);
+			diagramBrowser = new SWTDiagramBrowser(browserComposite, url, this);
 		}
 
 	}
