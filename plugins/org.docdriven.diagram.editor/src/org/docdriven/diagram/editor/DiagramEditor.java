@@ -64,6 +64,7 @@ public class DiagramEditor extends EditorPart {
 	private IDiagramBrowser diagramBrowser;
 	
 	private static final String GET_XML_SCRIPT = "editorUi.getXml()";
+	private static final String GET_JSON_SCRIPT = "editorUi.getJsonStr(true)";
 	private static final String GET_EXPORT_JSON_SCRIPT = "getExportJson()";
 	private static final String GET_SVG_SCRIPT = "mxUtils.getXml(editorUi.editor.graph.getSvg('#ffffff', 1, 0))";	
 
@@ -77,7 +78,13 @@ public class DiagramEditor extends EditorPart {
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 
-		String content = getDiagramXML();
+		String content = "";
+		
+		if(isJavaScriptInput()) {
+			content = getDiagramJson();
+		} else {			
+			content = getDiagramXML();
+		}
 
 		doSave(monitor, content);
 	}
@@ -271,7 +278,12 @@ public class DiagramEditor extends EditorPart {
 
 		dirty = false;
 		firePropertyChange(IEditorPart.PROP_DIRTY);
-		String content = getDiagramXML();
+		String content = "";
+		if(isJsonFile(file)) {
+			content = getDiagramJson();
+		} else {			
+			content = getDiagramXML();
+		}
 		try {
 			if (file.exists()) {
 				file.setContents(new ByteArrayInputStream(content.getBytes()), true, true, progressMonitor);
@@ -287,8 +299,20 @@ public class DiagramEditor extends EditorPart {
 		setPartName(newInput.getName());
 	}
 
+	private boolean isJavaScriptInput() {
+		return isJsonFile(getFile());
+	}	
+	
+	private boolean isJsonFile(IFile file) {
+		return file.getFileExtension().equalsIgnoreCase("js");
+	}
+
 	private String getDiagramXML() {
 		return diagramBrowser.executeScript(GET_XML_SCRIPT);
+	}
+	
+	private String getDiagramJson() {
+		return diagramBrowser.executeScript(GET_JSON_SCRIPT);
 	}
 
 	private String getDiagramSVG() {

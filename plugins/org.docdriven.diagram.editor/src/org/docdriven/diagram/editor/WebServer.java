@@ -81,9 +81,9 @@ public class WebServer extends NanoHTTPD {
 			IFile file = workspace.getRoot().getFile(new Path(f));
 			if (file.exists()) {
 				String content = getStringFromStream(file.getContents(), file.getCharset());
-				String javaContent = StringEscapeUtils.escapeJava(content);
+				String xmlContent = StringEscapeUtils.escapeJava(content);
 				editorHtml = editorHtml.replace("var xmlImportData = null;",
-						"var xmlImportData = \"" + javaContent + "\"");
+						"var xmlImportData = \"" + xmlContent + "\"");
 			}
 
 			return newFixedLengthResponse(Response.Status.OK, "text/html", editorHtml);
