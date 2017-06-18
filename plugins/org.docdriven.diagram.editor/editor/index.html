@@ -54,6 +54,7 @@
 	<script type="text/javascript" src="js/Format.js"></script>
 	<script type="text/javascript" src="js/Toolbar.js"></script>
 	<script type="text/javascript" src="js/Dialogs.js"></script>
+	<script type="text/javascript" src="js/xml2json.js"></script>
 </head>
 <body class="geEditor">
 	<script type="text/javascript">
@@ -128,6 +129,22 @@
 		
 				return mxUtils.getXml(this.editor.getGraphXml());
 			}
+			
+			EditorUi.prototype.getJson = function()
+			{
+				var xml = this.getXml();
+				var x2js = new X2JS();
+				return x2js.xml_str2json(xml);
+			}
+			
+			EditorUi.prototype.getJsonStr = function(pretty)
+			{
+				var json = this.getJson();
+				if(pretty === true) {
+					return JSON.stringify(json, null, 2);
+				}
+				return JSON.stringify(json);
+			}			
 			
 			EditorUi.prototype.importXml = function(data)
 			{
