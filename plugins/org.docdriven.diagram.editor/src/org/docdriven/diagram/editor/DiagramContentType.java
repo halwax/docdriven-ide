@@ -18,11 +18,19 @@ public class DiagramContentType implements ITextContentDescriber {
 	}
 	
 	public int describe(Reader contents, IContentDescription description) throws IOException {
-		return xmlContentDescriber.describe(contents, description);
+		int describe = xmlContentDescriber.describe(contents, description);
+		if(describe == ITextContentDescriber.INDETERMINATE) {
+			return ITextContentDescriber.INVALID;
+		}
+		return describe;
 	}
 
 	public int describe(InputStream contents, IContentDescription description) throws IOException {
-		return xmlContentDescriber.describe(contents, description);
+		int describe = xmlContentDescriber.describe(contents, description);
+		if(describe == ITextContentDescriber.INDETERMINATE) {
+			return ITextContentDescriber.INVALID;
+		}
+		return describe;
 	}
 
 	public QualifiedName[] getSupportedOptions() {

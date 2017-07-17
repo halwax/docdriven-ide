@@ -56,6 +56,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class DiagramEditor extends EditorPart {
 
+	private static final String XML_UTF8_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+
 	private boolean dirty;
 
 	/** Base url of embedded web server. */
@@ -85,14 +87,19 @@ public class DiagramEditor extends EditorPart {
 		} else {			
 			content = getDiagramXML();
 		}
-
 		doSave(monitor, content);
+
 	}
 
 	public void doSave(IProgressMonitor monitor, String content) {
 		dirty = false;
+		boolean js = isJavaScriptInput();
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 		try {
+			if(!js && !content.startsWith(XML_UTF8_HEADER)) {
+				String xmlContent = XML_UTF8_HEADER + content;
+				content = xmlContent;
+			}
 			getFile().setContents(new ByteArrayInputStream(content.getBytes()), true, true, monitor);
 		} catch (CoreException e) {
 			throw new RuntimeException(e);
