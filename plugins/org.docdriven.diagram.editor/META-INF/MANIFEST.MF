@@ -15,9 +15,9 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.ui.editors,
  org.eclipse.jface.text,
  org.apache.commons.lang3;bundle-version="3.1.0",
- org.eclipse.fx.javafx;bundle-version="2.2.0",
  org.eclipse.ui.forms,
  com.fasterxml.jackson.core.jackson-core,
- com.fasterxml.jackson.core.jackson-databind
+ com.fasterxml.jackson.core.jackson-databind,
+ org.eclipse.core.contenttype
 Bundle-Activator: org.docdriven.diagram.editor.Activator
 Bundle-ActivationPolicy: lazy

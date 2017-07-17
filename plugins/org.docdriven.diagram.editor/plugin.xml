@@ -6,11 +6,23 @@
       <editor
             class="org.docdriven.diagram.editor.DiagramEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            extensions="xdia"
+            extensions="xdia, js"
             icon="icons/logo.gif"
             id="org.docdriven.diagram.editor.DiagramEditor"
             name="Docdriven Diagram Editor">
+            <contentTypeBinding contentTypeId="org.docdriven.diagram.content"/>
       </editor>
+   </extension>
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            describer="org.docdriven.diagram.editor.DiagramContentType"
+            file-extensions="xdia,js"
+            id="org.docdriven.diagram.content"
+            name="docdriven diagram"
+            priority="normal">
+      </content-type>
    </extension>
 
 </plugin>
